@@ -1,0 +1,12 @@
+annotated-types==0.7.0
+astroid==3.3.8
+dill==0.3.9
+isort==5.13.2
+mccabe==0.7.0
+platformdirs==4.3.6
+pydantic==2.10.6
+pydantic_core==2.27.2
+pylint==3.3.3
+tomli==2.2.1
+tomlkit==0.13.2
+typing_extensions==4.12.2
