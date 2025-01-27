@@ -1,5 +1,5 @@
 """
-output_formatter.py
+tool/pylint_formatter.py
 
 Retrieves the results from pylint_runner.py and formats them for display,
 using `rich` for better output formatting.
@@ -9,7 +9,7 @@ Currently, it shows the summary of the results and detailed results for each fil
 from typing import List
 from rich.table import Table
 from rich.console import Console
-from pylint_runner import PylintResult
+from tool.pylint_runner import PylintResult
 
 console = Console()
 
