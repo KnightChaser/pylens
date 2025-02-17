@@ -134,7 +134,7 @@ def run_pylint(
 
         except FileNotFoundError:
             print(
-                "Error: Pylint is not installed. Please install it with 'pip install pylint'."
+                "Error: Pylint is not installed or the provided configuration file does not exist."
             )
 
     # Generally this can't happen, just to be sure and pass the pyright static anlaysis

@@ -204,6 +204,6 @@ def run_mypy(path: str, configuration: Optional[str] = None) -> List[MypyResult]
 
     except FileNotFoundError:
         print(
-            "Error: Mypy is not installed. Please install it with 'pip install mypy'."
+            "Error: Mypy is not installed or provided configuration file does not exist."
         )
         return []
