@@ -74,6 +74,15 @@ def run_pylint(
                     f"Configuration file '{configuration}' not found."
                 )
 
+            # If path ends with "/"(meaning whole directory), or
+            #    path ends without "*.py"(meaning a single file),
+            # append "*.py" to the path to include all python files
+            # Issue: https://stackoverflow.com/questions/48024049/pylint-raises-error-if-directory-doesnt-contain-init-py-file
+            if path.endswith("/"):
+                path += "*.py"
+            elif not path.endswith(".py"):
+                path += "/*.py"
+
             # Run pylint on the path
             if configuration:
                 print(f"Using configuration file: {configuration}")
