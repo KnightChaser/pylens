@@ -4,6 +4,7 @@ mypy_menu.py
 Handles the interactive menu for running and viewing MyPy results.
 """
 
+from typing import Optional
 from rich.console import Console
 from rich.prompt import Prompt
 from tool.mypy_formatter import format_summary, format_detailed_results
@@ -17,7 +18,7 @@ def clear_screen():
     console.clear()
 
 
-def run_mypy_menu(path: str):
+def run_mypy_menu(path: str, configuration: Optional[str] = None):
     """
     Handles the interactive menu for MyPy analysis.
 
@@ -29,7 +30,7 @@ def run_mypy_menu(path: str):
         console.print(f"[bold green]Running MyPy on: {path}[/bold green]")
 
         # Run MyPy and get results
-        results = run_mypy(path)
+        results = run_mypy(path=path, configuration=configuration)
 
         # Check if no issues were found
         if not results or all(len(res.issues) == 0 for res in results):

@@ -76,6 +76,7 @@ def run_pylint(
 
             # Run pylint on the path
             if configuration:
+                print(f"Using configuration file: {configuration}")
                 pylint_command = ["pylint", "--rcfile", configuration, path]
             else:
                 pylint_command = ["pylint", path]

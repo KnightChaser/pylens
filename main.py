@@ -23,7 +23,7 @@ def analyze(
         None,
         "--configuration",
         "-c",
-        help="Optional configuration file for the tool (e.g., .pylintrc for Pylint, mypy.ini for MyPy).",
+        help="Optional configuration file path for the tool (e.g., .pylintrc for Pylint, mypy.ini for MyPy).",
     ),
 ):
     """
@@ -33,7 +33,6 @@ def analyze(
     if tool == "pylint":
         run_pylint_menu(path=path, configuration=configuration)
     elif tool == "mypy":
-        # FIXME: Add MyPy configuration file feed support
         run_mypy_menu(path=path, configuration=configuration)
     else:
         typer.echo(

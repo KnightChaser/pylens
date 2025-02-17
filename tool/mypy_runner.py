@@ -4,6 +4,7 @@ tool/mypy_runner.py
 Executes Mypy on the provided paths and parses the output into structured data.
 """
 
+import os
 import subprocess
 from typing import List, Dict, Optional
 from pydantic import BaseModel
@@ -143,7 +144,7 @@ def parse_mypy_output(output: str) -> List[MypyResult]:
     ]
 
 
-def run_mypy(path: str) -> List[MypyResult]:
+def run_mypy(path: str, configuration: Optional[str] = None) -> List[MypyResult]:
     """
     Executes Mypy on the given path and parses the output.
 
@@ -154,29 +155,39 @@ def run_mypy(path: str) -> List[MypyResult]:
         List[MypyResult]: A list of structured Mypy results.
     """
     try:
+        # Check if configuration file is actually existing
+        if configuration and not os.path.exists(configuration):
+            raise FileNotFoundError(f"Configuration file not found: {configuration}")
+
         # Run Mypy command
+        mypy_command = [
+            "mypy",
+            "--strict",
+            "--pretty",
+            "--show-error-context",
+            "--show-column-numbers",
+            "--show-error-codes",
+            "--show-error-end",
+            "--disallow-any-expr",
+            "--disallow-any-decorated",
+            "--disallow-any-explicit",
+            "--disallow-any-generics",
+            "--disallow-untyped-calls",
+            "--disallow-untyped-defs",
+            "--check-untyped-defs",
+            "--warn-redundant-casts",
+            "--warn-unused-ignores",
+            "--warn-unreachable",
+            "--ignore-missing-imports",
+            path,
+        ]
+
+        if configuration:
+            print(f"Using configuration file: {configuration}")
+            mypy_command.append(f"--config-file={configuration}")
+
         result = subprocess.run(
-            [
-                "mypy",
-                "--strict",
-                "--pretty",
-                "--show-error-context",
-                "--show-column-numbers",
-                "--show-error-codes",
-                "--show-error-end",
-                "--disallow-any-expr",
-                "--disallow-any-decorated",
-                "--disallow-any-explicit",
-                "--disallow-any-generics",
-                "--disallow-untyped-calls",
-                "--disallow-untyped-defs",
-                "--check-untyped-defs",
-                "--warn-redundant-casts",
-                "--warn-unused-ignores",
-                "--warn-unreachable",
-                "--ignore-missing-imports",
-                path,
-            ],
+            mypy_command,
             capture_output=True,
             text=True,
         )
