@@ -4,6 +4,7 @@ pylint_menu.py
 Handles the interactive menu for running and viewing Pylint results.
 """
 
+from typing import Optional
 from rich.console import Console
 from rich.prompt import Prompt
 from tool.pylint_formatter import format_summary, format_detailed_results
@@ -17,7 +18,7 @@ def clear_screen():
     console.clear()
 
 
-def run_pylint_menu(path: str):
+def run_pylint_menu(path: str, configuration: Optional[str] = None):
     """
     Handles the interactive menu for Pylint analysis.
 
@@ -29,7 +30,7 @@ def run_pylint_menu(path: str):
         console.print(f"[bold green]Running Pylint on: {path}[/bold green]")
 
         # Run pylint and get the results
-        results, overall_score = run_pylint([path])
+        results, overall_score = run_pylint(paths=[path], configuration=configuration)
 
         # Check for no issues
         if not results:

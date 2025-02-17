@@ -7,8 +7,9 @@ Those objects will be used by the output_formatter.py to display the results
 in a more readable format using the rich library.
 """
 
+import os
 import subprocess
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Optional
 from pydantic import BaseModel
 
 
@@ -50,7 +51,9 @@ CATEGORY_MAPPING = {
 }
 
 
-def run_pylint(paths: List[str]) -> Tuple[List[PylintResult], float]:
+def run_pylint(
+    paths: List[str], configuration: Optional[str] = None
+) -> Tuple[List[PylintResult], float]:
     """
     Runs Pylint on the provided paths and parses the output.
 
@@ -65,8 +68,19 @@ def run_pylint(paths: List[str]) -> Tuple[List[PylintResult], float]:
 
     for path in paths:
         try:
+            # Check if the given configuration file exists
+            if configuration and not os.path.exists(configuration):
+                raise FileNotFoundError(
+                    f"Configuration file '{configuration}' not found."
+                )
+
             # Run pylint on the path
-            result = subprocess.run(["pylint", path], capture_output=True, text=True)
+            if configuration:
+                pylint_command = ["pylint", "--rcfile", configuration, path]
+            else:
+                pylint_command = ["pylint", path]
+
+            result = subprocess.run(pylint_command, capture_output=True, text=True)
 
             # Parse the output
             stdout_lines = result.stdout.splitlines()
