@@ -132,7 +132,6 @@ def parse_mypy_output(output: str) -> List[MypyResult]:
         # Detect multiline code expressions (lines following an issue)
         elif current_issue:
             current_code_expression.append(line)
-
     # Finalize any remaining code expression
     if current_issue and current_code_expression:
         current_issue.code_expression = "\n".join(current_code_expression)
