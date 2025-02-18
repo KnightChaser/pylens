@@ -117,8 +117,21 @@ def run_pylint(
                     if len(parts) == 4:
                         # Obtain the category name from the category letter by parsing each line
                         _, line_number, _, message = parts
-                        code = message.split(":")[0].strip()[0]
-                        category_letter = code.strip()[0]
+                        if message.strip():
+                            # Ensure that the message is nonempty.
+                            code_parts = message.split(":")
+                            if code_parts and code_parts[0].strip():
+                                code = code_parts[0].strip()
+                                category_letter = (
+                                    code[0]
+                                    if code and code[0] in CATEGORY_MAPPING
+                                    else "U"
+                                )
+                            else:
+                                category_letter = "U"
+                        else:
+                            category_letter = "U"
+                        # code = message.split(":")[0].strip()[0]
                         category_name = CATEGORY_MAPPING.get(category_letter, "Unknown")
 
                         issue = PylintIssue(
